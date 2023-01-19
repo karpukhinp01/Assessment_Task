@@ -5,6 +5,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
@@ -45,6 +47,27 @@ class FirstFragment : Fragment() {
         mMainViewModel = ViewModelProvider(this)[MainViewModel::class.java]
         mMainViewModel.programmeList.observe(viewLifecycleOwner) {
             RVAdapter.updatePosts(it)
+        }
+
+        binding.listToolbar.inflateMenu(R.menu.menu_main)
+
+        binding.listToolbar.setOnMenuItemClickListener {
+            if (it.itemId == R.id.action_theme)  {
+                if (MyPreferences(this.requireContext()).darkMode == 0) {
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+                    MyPreferences(this.requireContext()).darkMode = 1
+                    Toast.makeText(this.requireContext(), "Set to dark mode!", Toast.LENGTH_LONG).show()
+                } else if (MyPreferences(this.requireContext()).darkMode == 1) {
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
+                    MyPreferences(this.requireContext()).darkMode = 2
+                    Toast.makeText(this.requireContext(), "Set to system mode!", Toast.LENGTH_LONG).show()
+                } else {
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+                    MyPreferences(this.requireContext()).darkMode = 0
+                    Toast.makeText(this.requireContext(), "Set to light mode!", Toast.LENGTH_LONG).show()
+                }
+                true
+            } else false
         }
     }
 
