@@ -64,9 +64,11 @@ class SecondFragment : Fragment() {
             findNavController().navigate(R.id.action_SecondFragment_to_FirstFragment)
         }
 
+        val formattedDesc = args.item.description.replace("| ", "\n")
+
         Picasso.with(requireContext()).load(args.item.imageUrl).into(binding.image)
         binding.title.text = args.item.title
-        binding.description.text = args.item.description
+        binding.description.text = formattedDesc
 
     }
 
