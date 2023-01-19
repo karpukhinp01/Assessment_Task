@@ -7,12 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.get
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.nousassesment.databinding.FragmentSecondBinding
-import com.example.nousassesment.viewmodels.MainViewModel
 import com.squareup.picasso.Picasso
 
 /**
