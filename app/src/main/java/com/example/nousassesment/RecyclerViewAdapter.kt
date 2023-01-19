@@ -41,8 +41,13 @@ class RecyclerViewAdapter(val context: Context): RecyclerView.Adapter<RecyclerVi
         val imageUrl = if (currentItem.imageUrl.endsWith("/preview")) currentItem.imageUrl
         else currentItem.imageUrl.plus("/preview")
         // sets the image to the imageview from our itemHolder class
-        holder.title.text = currentItem.title
         Picasso.with(context).load(imageUrl).into(holder.image)
+        holder.title.text = currentItem.title
+
+        holder.itemView.setOnClickListener {
+            val action = FirstFragmentDirections.actionFirstFragmentToSecondFragment(currentItem)
+            holder.itemView.findNavController().navigate(action)
+        }
 
 //        // sets the text to the textview from our itemHolder class
 //        holder.description.text = currentItem.description
