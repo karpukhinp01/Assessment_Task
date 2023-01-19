@@ -7,9 +7,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.get
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.nousassesment.databinding.FragmentSecondBinding
+import com.example.nousassesment.viewmodels.MainViewModel
 import com.squareup.picasso.Picasso
 
 /**
@@ -66,7 +69,8 @@ class SecondFragment : Fragment() {
 
         val formattedDesc = args.item.description.replace("| ", "\n")
 
-        Picasso.with(requireContext()).load(args.item.imageUrl).into(binding.image)
+        val imageCorr = if (args.item.imageUrl.endsWith("/preview")) args.item.imageUrl else args.item.imageUrl.plus("/preview")
+        Picasso.with(requireContext()).load(imageCorr).into(binding.image)
         binding.title.text = args.item.title
         binding.description.text = formattedDesc
 
