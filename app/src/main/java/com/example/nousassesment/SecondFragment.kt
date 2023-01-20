@@ -74,8 +74,7 @@ class SecondFragment : Fragment() {
         val formattedDesc = args.item.description.replace("| ", "\n")
         val imageCorr = if (args.item.imageUrl.endsWith("/preview")) args.item.imageUrl else args.item.imageUrl.plus("/preview")
 
-//        Picasso.with(requireContext()).load(imageCorr).into(binding.image)
-        binding.image.setImageBitmap(mMainViewModel.getBitMap(imageCorr))
+        Picasso.with(requireContext()).load(imageCorr).into(binding.image)
         binding.title.text = args.item.title
         binding.description.text = formattedDesc
 
