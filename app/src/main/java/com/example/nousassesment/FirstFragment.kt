@@ -9,11 +9,10 @@ import android.widget.SearchView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
+import com.example.nousassesment.data.LoadStatus
 import com.example.nousassesment.databinding.FragmentFirstBinding
 import com.example.nousassesment.viewmodels.MainViewModel
-import java.util.Locale.filter
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
@@ -31,7 +30,7 @@ class FirstFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         _binding = FragmentFirstBinding.inflate(inflater, container, false)
         return binding.root
@@ -51,7 +50,32 @@ class FirstFragment : Fragment() {
             RVAdapter.updatePosts(it)
         }
 
+        mMainViewModel.loadStatus.observe(viewLifecycleOwner) {
+            when (it) {
+                LoadStatus.LOADING -> {
+                    binding.retryButton.visibility = View.GONE
+                    binding.recyclerView.visibility = View.GONE
+                    binding.statusImageView.visibility = View.VISIBLE
+                    binding.statusImageView.setImageResource(R.drawable.ic_baseline_cloud_download_24)
+                }
+                LoadStatus.SUCCESS -> {
+                    binding.retryButton.visibility = View.GONE
+                    binding.recyclerView.visibility = View.VISIBLE
+                    binding.statusImageView.visibility = View.GONE
+                }
+                LoadStatus.ERROR -> {
+                    binding.retryButton.visibility = View.VISIBLE
+                    binding.statusImageView.visibility = View.VISIBLE
+                    binding.statusImageView.setImageResource(R.drawable.ic_broken_image)
+                }
+            }
+        }
+
         binding.listToolbar.inflateMenu(R.menu.menu_main)
+
+        binding.retryButton.setOnClickListener {
+            mMainViewModel.getItemsList()
+        }
 
         binding.listToolbar.setOnMenuItemClickListener {
             if (it.itemId == R.id.action_theme)  {

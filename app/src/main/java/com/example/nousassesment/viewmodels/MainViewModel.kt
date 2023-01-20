@@ -12,6 +12,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.nousassesment.data.Item
+import com.example.nousassesment.data.LoadStatus
 import com.example.nousassesment.network.NousApi
 import kotlinx.coroutines.launch
 import java.io.File
@@ -24,14 +25,24 @@ class MainViewModel: ViewModel() {
     private val _programmeList = MutableLiveData<List<Item>>()
     val programmeList: LiveData<List<Item>> get() = _programmeList
 
+    private val _loadStatus = MutableLiveData<LoadStatus>()
+    val loadStatus: LiveData<LoadStatus> get()= _loadStatus
+
     init {
         getItemsList()
     }
 
-    private fun getItemsList() {
+    fun getItemsList() {
         viewModelScope.launch {
-            val result = NousApi.retrofitService.getItems()
-            _programmeList.value = result.items
+            _loadStatus.value = LoadStatus.LOADING
+            try {
+                val result = NousApi.retrofitService.getItems()
+                _programmeList.value = result.items
+                _loadStatus.value = LoadStatus.SUCCESS
+            } catch (e: Exception) {
+                _loadStatus.value = LoadStatus.ERROR
+                _programmeList.value = listOf()
+            }
         }
     }
 
