@@ -1,6 +1,8 @@
 package com.example.nousassesment.viewmodels
 
 import android.app.Application
+import android.content.Intent
+import android.net.Uri
 import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -32,11 +34,22 @@ class MainViewModel: ViewModel() {
 
     fun filter(query: String): ArrayList<Item> {
         val filteredList = ArrayList<Item>()
-        for (i in programmeList.value!!) {
-            if (i.title.lowercase().contains(query.lowercase())
-                || i.description.lowercase().contains(query.lowercase()))
-                filteredList.add(i)
+        if (programmeList.value != null) {
+            for (i in programmeList.value!!) {
+                if (i.title.lowercase().contains(query.lowercase())
+                    || i.description.lowercase().contains(query.lowercase()))
+                    filteredList.add(i)
+            }
         }
         return filteredList
+    }
+
+    fun sendEmail(item:Item): Intent {
+        val intent = Intent(Intent.ACTION_SEND)
+        intent.type = "text/plain"
+        intent.putExtra(Intent.EXTRA_SUBJECT, item.title)
+        intent.putExtra(Intent.EXTRA_TEXT, item.description)
+        intent.putExtra("image_url", item.imageUrl)
+        return intent
     }
 }

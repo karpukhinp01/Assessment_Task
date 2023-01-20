@@ -1,5 +1,6 @@
 package com.example.nousassesment
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -7,9 +8,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.nousassesment.databinding.FragmentSecondBinding
+import com.example.nousassesment.viewmodels.MainViewModel
 import com.squareup.picasso.Picasso
 
 /**
@@ -17,6 +20,7 @@ import com.squareup.picasso.Picasso
  */
 class SecondFragment : Fragment() {
 
+    private lateinit var mMainViewModel: MainViewModel
     private val args by navArgs<SecondFragmentArgs>()
     private var _binding: FragmentSecondBinding? = null
 
@@ -36,6 +40,8 @@ class SecondFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        mMainViewModel = ViewModelProvider(this)[MainViewModel::class.java]
 
         binding.detailToolbar.inflateMenu(R.menu.menu_detail)
 
@@ -70,6 +76,14 @@ class SecondFragment : Fragment() {
         Picasso.with(requireContext()).load(imageCorr).into(binding.image)
         binding.title.text = args.item.title
         binding.description.text = formattedDesc
+
+        binding.shareButton.setOnClickListener {
+            try {
+                startActivity(Intent.createChooser(mMainViewModel.sendEmail(args.item), "Send with"))
+            } catch (e: Exception) {
+                Toast.makeText(requireContext(), e.message, Toast.LENGTH_LONG).show()
+            }
+        }
 
     }
 
