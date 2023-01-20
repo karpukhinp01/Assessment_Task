@@ -1,19 +1,22 @@
 package com.example.nousassesment.viewmodels
 
-import android.app.Application
+import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.net.Uri
-import android.widget.Toast
+import android.util.Log
+import androidx.core.content.FileProvider
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.nousassesment.FirstFragment
-import com.example.nousassesment.RecyclerViewAdapter
 import com.example.nousassesment.data.Item
 import com.example.nousassesment.network.NousApi
 import kotlinx.coroutines.launch
-import java.util.*
+import java.io.File
+import java.io.FileOutputStream
+import java.net.URL
 import kotlin.collections.ArrayList
 
 class MainViewModel: ViewModel() {
@@ -43,13 +46,48 @@ class MainViewModel: ViewModel() {
         }
         return filteredList
     }
+    fun getBitMap(urlS: String): Bitmap? {
+        try {
+            val url = URL(urlS)
+            return BitmapFactory.decodeStream(url.openStream())
+        } catch (e: Exception) {
+            Log.d("Bitmap", e.message.toString())
+            return null
+        }
+    }
 
-    fun sendEmail(item:Item): Intent {
+    private fun saveBitMap(image: Bitmap, context: Context): Uri {
+
+        val cachePath = File(context.externalCacheDir, "my_images/")
+        cachePath.mkdirs()
+
+        val file = File(cachePath, "shared_media.png")
+        val fileOutputStream: FileOutputStream
+
+        try {
+            fileOutputStream = FileOutputStream(file)
+            image.compress(Bitmap.CompressFormat.PNG, 100, fileOutputStream)
+            fileOutputStream.flush()
+            fileOutputStream.close()
+        } catch (e: Exception) {
+            Log.d("Bitmap", e.message.toString())
+        }
+        return FileProvider.getUriForFile(context, context.packageName + ".provider", file)
+    }
+
+    fun sendEmail(item:Item, context: Context): Intent {
+
+        val image = getBitMap(item.imageUrl)
+        var uri: Uri? = null
+        if (image != null) {
+            uri = saveBitMap(image, context)
+        }
+
         val intent = Intent(Intent.ACTION_SEND)
-        intent.type = "text/plain"
+        intent.type = "image/png"
+        intent.putExtra(Intent.EXTRA_STREAM, uri)
         intent.putExtra(Intent.EXTRA_SUBJECT, item.title)
         intent.putExtra(Intent.EXTRA_TEXT, item.description)
-        intent.putExtra("image_url", item.imageUrl)
         return intent
     }
 }

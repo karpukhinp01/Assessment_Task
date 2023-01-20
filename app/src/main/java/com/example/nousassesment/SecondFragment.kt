@@ -1,6 +1,7 @@
 package com.example.nousassesment
 
 import android.content.Intent
+import android.graphics.Bitmap
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -73,13 +74,14 @@ class SecondFragment : Fragment() {
         val formattedDesc = args.item.description.replace("| ", "\n")
         val imageCorr = if (args.item.imageUrl.endsWith("/preview")) args.item.imageUrl else args.item.imageUrl.plus("/preview")
 
-        Picasso.with(requireContext()).load(imageCorr).into(binding.image)
+//        Picasso.with(requireContext()).load(imageCorr).into(binding.image)
+        binding.image.setImageBitmap(mMainViewModel.getBitMap(imageCorr))
         binding.title.text = args.item.title
         binding.description.text = formattedDesc
 
         binding.shareButton.setOnClickListener {
             try {
-                startActivity(Intent.createChooser(mMainViewModel.sendEmail(args.item), "Send with"))
+                startActivity(Intent.createChooser(mMainViewModel.sendEmail(args.item, requireContext().applicationContext), "Send with"))
             } catch (e: Exception) {
                 Toast.makeText(requireContext(), e.message, Toast.LENGTH_LONG).show()
             }
