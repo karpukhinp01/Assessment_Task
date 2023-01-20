@@ -64,4 +64,10 @@ class RecyclerViewAdapter(val context: Context): RecyclerView.Adapter<RecyclerVi
         return mList.size
     }
 
+    // method for filtering our recyclerview items.
+    fun filterList(filterList: ArrayList<Item>) {
+        mList = filterList
+        notifyDataSetChanged()
+    }
+
 }

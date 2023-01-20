@@ -37,7 +37,7 @@ class SecondFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.detailToolbar.inflateMenu(R.menu.menu_main)
+        binding.detailToolbar.inflateMenu(R.menu.menu_detail)
 
         binding.detailToolbar.setOnMenuItemClickListener {
             if (it.itemId == R.id.action_theme)  {
@@ -65,8 +65,8 @@ class SecondFragment : Fragment() {
         }
 
         val formattedDesc = args.item.description.replace("| ", "\n")
-
         val imageCorr = if (args.item.imageUrl.endsWith("/preview")) args.item.imageUrl else args.item.imageUrl.plus("/preview")
+
         Picasso.with(requireContext()).load(imageCorr).into(binding.image)
         binding.title.text = args.item.title
         binding.description.text = formattedDesc

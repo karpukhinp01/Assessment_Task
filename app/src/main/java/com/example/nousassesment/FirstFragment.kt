@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.SearchView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.ViewModelProvider
@@ -12,6 +13,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.nousassesment.databinding.FragmentFirstBinding
 import com.example.nousassesment.viewmodels.MainViewModel
+import java.util.Locale.filter
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
@@ -69,6 +71,20 @@ class FirstFragment : Fragment() {
                 true
             } else false
         }
+
+        val searchItem = binding.listToolbar.menu.findItem(R.id.actionSearch)
+        val searchView = searchItem.actionView as SearchView
+
+        searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(query: String?): Boolean {
+                RVAdapter.updatePosts(mMainViewModel.filter(query!!))
+                return false
+            }
+        })
     }
 
     override fun onDestroyView() {
