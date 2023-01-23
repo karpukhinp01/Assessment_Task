@@ -14,7 +14,6 @@ import androidx.lifecycle.viewModelScope
 import com.example.nousassesment.data.Item
 import com.example.nousassesment.data.LoadStatus
 import com.example.nousassesment.repositories.MainApi
-//import com.example.nousassesment.repositories.NousApi
 import kotlinx.coroutines.launch
 import java.io.File
 import java.io.FileOutputStream
@@ -37,7 +36,6 @@ class MainViewModel(private val repository: MainApi): ViewModel() {
         viewModelScope.launch {
             _loadStatus.value = LoadStatus.LOADING
             try {
-//                val result = NousApi.retrofitService.getItems()
                 val result = repository.getItems()
                 _programmeList.value = result.items
                 _loadStatus.value = LoadStatus.SUCCESS
