@@ -13,14 +13,15 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.nousassesment.data.Item
 import com.example.nousassesment.data.LoadStatus
-import com.example.nousassesment.network.NousApi
+import com.example.nousassesment.repositories.MainApi
+//import com.example.nousassesment.repositories.NousApi
 import kotlinx.coroutines.launch
 import java.io.File
 import java.io.FileOutputStream
 import java.net.URL
 import kotlin.collections.ArrayList
 
-class MainViewModel: ViewModel() {
+class MainViewModel(private val repository: MainApi): ViewModel() {
 
     private val _programmeList = MutableLiveData<List<Item>>()
     val programmeList: LiveData<List<Item>> get() = _programmeList
@@ -36,7 +37,8 @@ class MainViewModel: ViewModel() {
         viewModelScope.launch {
             _loadStatus.value = LoadStatus.LOADING
             try {
-                val result = NousApi.retrofitService.getItems()
+//                val result = NousApi.retrofitService.getItems()
+                val result = repository.getItems()
                 _programmeList.value = result.items
                 _loadStatus.value = LoadStatus.SUCCESS
             } catch (e: Exception) {
@@ -68,7 +70,6 @@ class MainViewModel: ViewModel() {
     }
 
     private fun saveBitMap(image: Bitmap, context: Context): Uri {
-
         val cachePath = File(context.externalCacheDir, "my_images/")
         cachePath.mkdirs()
 
