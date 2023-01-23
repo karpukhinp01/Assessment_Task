@@ -58,11 +58,11 @@ class MainViewModel: ViewModel() {
         return filteredList
     }
     private fun getBitMap(urlS: String): Bitmap? {
-        try {
+        return try {
             val url = URL(urlS)
-            return BitmapFactory.decodeStream(url.openStream())
+            BitmapFactory.decodeStream(url.openStream())
         } catch (e: Exception) {
-            return null
+            null
         }
     }
 
