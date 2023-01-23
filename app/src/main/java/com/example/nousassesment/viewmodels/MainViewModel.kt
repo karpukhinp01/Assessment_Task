@@ -57,12 +57,11 @@ class MainViewModel: ViewModel() {
         }
         return filteredList
     }
-    fun getBitMap(urlS: String): Bitmap? {
+    private fun getBitMap(urlS: String): Bitmap? {
         try {
             val url = URL(urlS)
             return BitmapFactory.decodeStream(url.openStream())
         } catch (e: Exception) {
-            Log.d("Bitmap", e.message.toString())
             return null
         }
     }
@@ -81,7 +80,7 @@ class MainViewModel: ViewModel() {
             fileOutputStream.flush()
             fileOutputStream.close()
         } catch (e: Exception) {
-            Log.d("Bitmap", e.message.toString())
+            Log.d("saveBitMap", e.message.toString())
         }
         return FileProvider.getUriForFile(context, context.packageName + ".provider", file)
     }
