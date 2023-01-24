@@ -1,7 +1,6 @@
 package com.example.nousassesment
 
 import android.content.Intent
-import android.graphics.Bitmap
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -9,19 +8,19 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.nousassesment.databinding.FragmentSecondBinding
 import com.example.nousassesment.viewmodels.MainViewModel
 import com.squareup.picasso.Picasso
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 /**
  * A simple [Fragment] subclass as the second destination in the navigation.
  */
 class SecondFragment : Fragment() {
 
-    private lateinit var mMainViewModel: MainViewModel
+    private val mMainViewModel: MainViewModel by viewModel()
     private val args by navArgs<SecondFragmentArgs>()
     private var _binding: FragmentSecondBinding? = null
 
@@ -32,7 +31,7 @@ class SecondFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         _binding = FragmentSecondBinding.inflate(inflater, container, false)
         return binding.root
@@ -41,8 +40,6 @@ class SecondFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        mMainViewModel = ViewModelProvider(this)[MainViewModel::class.java]
 
         binding.detailToolbar.inflateMenu(R.menu.menu_detail)
 

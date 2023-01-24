@@ -8,11 +8,11 @@ import android.view.ViewGroup
 import android.widget.SearchView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.nousassesment.data.LoadStatus
 import com.example.nousassesment.databinding.FragmentFirstBinding
 import com.example.nousassesment.viewmodels.MainViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
@@ -20,7 +20,7 @@ import com.example.nousassesment.viewmodels.MainViewModel
 class FirstFragment : Fragment() {
 
     private lateinit var  RVAdapter: RecyclerViewAdapter
-    private lateinit var mMainViewModel: MainViewModel
+    private val mMainViewModel: MainViewModel by viewModel()
     private var _binding: FragmentFirstBinding? = null
 
     // This property is only valid between onCreateView and
@@ -45,7 +45,6 @@ class FirstFragment : Fragment() {
         RVAdapter = RecyclerViewAdapter(requireContext())
         recyclerview.adapter = RVAdapter
 
-        mMainViewModel = ViewModelProvider(this)[MainViewModel::class.java]
         mMainViewModel.programmeList.observe(viewLifecycleOwner) {
             RVAdapter.updatePosts(it)
         }
