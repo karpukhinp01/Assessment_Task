@@ -94,7 +94,7 @@ class MainViewModel: ViewModel() {
         }
 
         val intent = Intent(Intent.ACTION_SEND)
-        intent.type = "image/png"
+        intent.type = "message/rfc822"
         intent.putExtra(Intent.EXTRA_STREAM, uri)
         intent.putExtra(Intent.EXTRA_SUBJECT, item.title)
         intent.putExtra(Intent.EXTRA_TEXT, item.description)
