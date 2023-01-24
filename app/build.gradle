@@ -65,8 +65,7 @@ dependencies {
 
     // Koin for Android
     implementation "io.insert-koin:koin-android:3.2.3"
-
-
+    implementation "androidx.appcompat:appcompat:1.6.0"
 
     //Mockk
     testImplementation "io.mockk:mockk:1.13.3"
