@@ -40,8 +40,13 @@ class FirstFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // This code sets up a RecyclerView for displaying a list of items.
         val recyclerview = binding.recyclerView
+
+        // It sets the layout manager of the RecyclerView to a GridLayoutManager with 2 columns.
+        // This will display the items in a grid format with 2 columns.
         recyclerview.layoutManager = GridLayoutManager(requireContext(), 2)
+
         RVAdapter = RecyclerViewAdapter(requireContext())
         recyclerview.adapter = RVAdapter
 
@@ -49,6 +54,8 @@ class FirstFragment : Fragment() {
             RVAdapter.updatePosts(it)
         }
 
+        // This code observes the loadStatus LiveData from the MainViewModel
+        // and updates the UI accordingly.
         mMainViewModel.loadStatus.observe(viewLifecycleOwner) {
             when (it) {
                 LoadStatus.LOADING -> {
@@ -70,11 +77,11 @@ class FirstFragment : Fragment() {
             }
         }
 
-        binding.listToolbar.inflateMenu(R.menu.menu_main)
-
         binding.retryButton.setOnClickListener {
             mMainViewModel.getItemsList()
         }
+
+        binding.listToolbar.inflateMenu(R.menu.menu_main)
 
         binding.listToolbar.setOnMenuItemClickListener {
             if (it.itemId == R.id.action_theme)  {

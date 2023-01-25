@@ -43,6 +43,10 @@ class SecondFragment : Fragment() {
 
         binding.detailToolbar.inflateMenu(R.menu.menu_detail)
 
+        // sets up an onMenuItemClickListener for the detailToolbar in order
+        // to handle clicks on the menu items, especially theme preferences.
+        // It uses the MyPreferences class to check the current dark mode value,
+        // this class is using SharedPreferences to save the state of the theme.
         binding.detailToolbar.setOnMenuItemClickListener {
             if (it.itemId == R.id.action_theme)  {
                 if (MyPreferences(this.requireContext()).darkMode == 0) {
