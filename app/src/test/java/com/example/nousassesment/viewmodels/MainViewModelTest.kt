@@ -1,6 +1,5 @@
 package com.example.nousassesment.viewmodels
 
-import android.os.Looper
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import org.junit.Assert.*
 import com.example.nousassesment.data.Item
@@ -9,6 +8,7 @@ import com.example.nousassesment.data.LoadStatus
 import com.example.nousassesment.repositories.MainApi
 import io.mockk.*
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.TestCoroutineDispatcher
 import kotlinx.coroutines.test.setMain
 import org.junit.Rule
@@ -20,12 +20,13 @@ class MainViewModelTest {
 
     val dispatcher = TestCoroutineDispatcher()
 
-    val item1 = Item("id1", "title1", "description1", "https://example.com/test_item1.png")
+    val item1 = Item("id1", "title1", "description1", "https://picsum.photos/200")
     val item2 = Item("id2", "title2", "description2", "https://example.com/test_item2.png")
     val item3 = Item("id3", "title3", "description3", "https://example.com/test_item3.png")
     val itemList = listOf(item1, item2, item3)
 
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     @Test
     fun `filter should return filtered items based on query`() {
         Dispatchers.setMain(dispatcher)
@@ -50,19 +51,17 @@ class MainViewModelTest {
     @get:Rule
     val rule = InstantTaskExecutorRule()
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     @Test
-    fun `getItemsList should update programmeList LiveData`() {
+    fun `getItemsList should update programmeList and loadStatus LiveData`() {
         Dispatchers.setMain(dispatcher)
-
-        mockkStatic(Looper::class)
-        every { Looper.getMainLooper() } returns mockk()
 
         val repository = mockk<MainApi>()
         coEvery { repository.getItems() } returns ItemList(listOf(item1, item2, item3))
 
         val viewModel = MainViewModel(repository)
 
-        //Act
+        // Act
         viewModel.getItemsList()
         viewModel.programmeList.observeForever {  }
         viewModel.loadStatus.observeForever {  }
@@ -70,6 +69,6 @@ class MainViewModelTest {
         // Assert
         assertEquals(viewModel.programmeList.value, itemList)
         assertEquals(viewModel.loadStatus.value, LoadStatus.SUCCESS)
-
     }
+
 }

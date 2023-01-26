@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/fragment_first"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -21,28 +22,28 @@
     </com.google.android.material.appbar.MaterialToolbar>
 
     <ImageView
-        android:layout_marginTop="80dp"
-        android:layout_gravity="center_horizontal"
         android:id="@+id/status_image_view"
         android:layout_width="50dp"
-        android:layout_height="50dp"/>
+        android:layout_height="50dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="80dp" />
 
     <TextView
+        android:id="@+id/retry_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:textColor="@color/material_dynamic_neutral70"
         android:layout_marginTop="5dp"
-        android:textSize="19sp"
         android:text="@string/retry"
-        android:textStyle="bold"
-        android:id="@+id/retry_button"/>
+        android:textColor="@color/material_dynamic_neutral70"
+        android:textSize="19sp"
+        android:textStyle="bold" />
 
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="5dp"/>
+        android:padding="5dp" />
 
 </LinearLayout>
